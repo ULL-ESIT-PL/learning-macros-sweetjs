@@ -56,6 +56,77 @@ which create a List
 (see the [immutable.js](https://facebook.github.io/immutable-js/docs/#/List) docs for its API) 
 of syntax objects.
 
+# Sweet New
+
+Let's move on to a slightly more interesting example.
+Pretend you are using an OO framework for JavaScript where instead of using `new` we want to call a `.create` method that has been monkey patched. 
+
+```js
+➜  hello-sweet.js git:(main) ✗ cat -n my-patch.js 
+     1  Object.prototype.create = function (name, color, movement) {
+     2    console.log(`Created ${name} with color ${color} and movement ${movement}`);
+     3  };
+```
+
+Rather than manually rewrite all usages of `new` to the `create` method you could define a macro that does it for you.
+
+```js
+➜  hello-sweet.js git:(main) ✗ cat -n sweet-new.js 
+     1  syntax new = function (ctx) {
+     2    let ident = ctx.next().value; console.error(ident.value.token.value); // Droid
+     3    let params = ctx.next().value; console.error(params.inner._tail.array.map(x => x.value.token.str || x.value.token.value)); // [ '(', 'BB-8', ',', 'orange', ',', 'rolling', ')' ]
+     4    return #`${ident}.create ${params}`;
+     5  };
+     6
+     7  require("./my-patch.js");
+     8  const Droid = {};
+     9
+    10  new Droid('BB-8', 'orange', 'rolling');
+```
+
+```js
+Droid.create('BB-8', 'orange');
+```
+
+Here you can see the `ctx` parameter to the macro provides access to syntax at the macro call-site. This parameter is an iterator called the _macro context_.
+
+The macro context has the type:
+
+```js
+{
+  next: () -> {
+    done: boolean,
+    value: Syntax
+  }
+}
+```
+
+Each call to `next` returns the successive syntax object in `value` until there is nothing left in which case `done` is set to true. Note that the context is also an iterable so you can use `for-of` and related goodies.
+
+Note that in this example we only call `next` twice even though it looks like there is more than two bits of syntax we want to match. What gives? Well, remember that delimiters cause syntax objects to nest. So, as far as the macro context is concerned there are two syntax objects: `Droid` and a single paren delimiter syntax object containing the three syntax objects `'BB-8'`, `,`, and `'orange'`.
+
+After grabbing both syntax objects with the macro context iterator we can stuff them into a syntax template. Syntax templates allow syntax objects to be used in interpolations so it is straightforward to get our desired result.
+
+Here is the output of the above code:
+
+```js
+➜  hello-sweet.js git:(main) ✗ sjs sweet-new.js       
+Droid
+[ '(', 'BB-8', ',', 'orange', ',', 'rolling', ')' ]
+require("./my-patch.js");
+const Droid_6 = {};
+Droid_6.create("BB-8", "orange", "rolling");
+```
+
+Execution piped to node.js:
+
+```js
+➜  hello-sweet.js git:(main) ✗ sjs sweet-new.js | node
+Droid
+[ '(', 'BB-8', ',', 'orange', ',', 'rolling', ')' ]
+Created BB-8 with color orange and movement rolling
+```
+
 ## Operators
 
 In addition to the macros we've seen so far, Sweet allows you to define custom operators. Custom operators are different from macros in that you can specify the precedence and associativity but you can't match arbitrary syntax; the operator definition is invoked with fully expanded expressions for its operands.
