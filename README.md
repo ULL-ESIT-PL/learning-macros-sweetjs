@@ -25,9 +25,19 @@
 
 ## Introduction
 
+Sweet brings the hygienic macros of languages like Scheme and Rust to JavaScript.
+Macros allow you to sweeten the syntax of JavaScript and craft the language you’ve always wanted.
+
+Install Sweet with npm:
+
+```sh
+$ npm install -g @sweet-js/cli @sweet-js/helpers
+```
+
+This globally installs the `sjs` binary, which is used to compile Sweet code.
+
 Note that [Sweet](https://www.sweetjs.org/doc/tutorial) uses Babel as a backend. After [Sweet](https://www.sweetjs.org/doc/tutorial) has done its work of finding and expanding macros, the resulting code is run through Babel.
 
-The first three lines make up the macro definition. 
 The `syntax` keyword is a bit like `let` in that it creates a new variable in the current block scope. 
 Rather than create a variable for a runtime value, `syntax` creates a new variable for a **compiletime** value. 
 In this case, `hi` is the variable bound to the **compiletime** function defined on the first three lines.
