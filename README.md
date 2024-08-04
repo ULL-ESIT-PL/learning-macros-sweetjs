@@ -2,23 +2,26 @@
 
 - https://www.sweetjs.org/doc/tutorial
 
-```
-➜  hello-sweet.js node --version
-v20.5.0
-```
+- Checked with node v20.5.0
+  
+  ```
+  ➜  hello-sweet.js node --version
+  v20.5.0
+  ```
+- Fact: The project seems to be abandoned (2017 is the date for 6 of the 7 repos). 
 
-- The project seems to be abandoned (2017 is the date for 6 of the 7 repos). 
+- Help:
+  
+  ```
+  ➜  hello-sweet.js sjs --help
+  Usage: sjs [options] files ...
 
-```
-➜  hello-sweet.js sjs --help
-Usage: sjs [options] files ...
-
-Opciones:
-  -b, --no-babel  do not use babel backend
-  -o, --out-file  write output to file
-  -d, --out-dir   write output to directory
-  -h, --help      Muestra ayuda                                        [boolean]
-```
+  Opciones:
+    -b, --no-babel  do not use babel backend
+    -o, --out-file  write output to file
+    -d, --out-dir   write output to directory
+    -h, --help      Muestra ayuda                                        [boolean]
+  ```
 
 ## Introduction
 
@@ -87,6 +90,8 @@ myPromise_4.then(resp_7 => {
   return resp_7;
 });
 ```
+
+Execution: 
 
 ``` 
 ➜  hello-sweet.js sjs operators.js | node
