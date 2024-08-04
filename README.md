@@ -56,6 +56,13 @@ which create a List
 (see the [immutable.js](https://facebook.github.io/immutable-js/docs/#/List) docs for its API) 
 of syntax objects.
 
+```js
+➜  hello-sweet.js git:(main) sjs hello-sweet.js 
+console.log("hello, world!");
+➜  hello-sweet.js git:(main) sjs hello-sweet.js | node
+hello, world!
+```
+
 # Sweet New
 
 Let's move on to a slightly more interesting example.
