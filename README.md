@@ -97,3 +97,24 @@ Execution:
 ➜  hello-sweet.js sjs operators.js | node
 foo
 ```
+
+Here is an example of a unary operator:
+
+```js 
+➜  hello-sweet.js git:(main) ✗ cat -n unary-operator.js 
+     1
+     2  operator @ prefix 20 = (value) => { // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence
+     3    return #`Math.floor(${value})`;
+     4  };
+     5
+     6  let a = 3.5
+     7  console.log(@ a);    // 3
+     8  console.log(@ 3.5);  // 3
+➜  hello-sweet.js git:(main) ✗ sjs unary-operator.js | node
+3
+3
+➜  hello-sweet.js git:(main) ✗ sjs unary-operator.js       
+let a_3 = 3.5;
+console.log(Math.floor(a_3));
+console.log(Math.floor(3.5));
+```

@@ -1,5 +1,5 @@
 
-operator @ left 20 = (left, right) => {
+operator @ left 20 = (left, right) => { // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence
   return #`Math.min(${left}, ${right})`;
 };
 
