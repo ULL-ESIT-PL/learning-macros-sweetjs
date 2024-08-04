@@ -45,6 +45,10 @@ of syntax objects.
 
 ## Operators
 
+In addition to the macros we've seen so far, Sweet allows you to define custom operators. Custom operators are different from macros in that you can specify the precedence and associativity but you can't match arbitrary syntax; the operator definition is invoked with fully expanded expressions for its operands.
+
+Operators are defined via the `operator` keyword:
+
 ```js
 operator >>= left 1 = (left, right) => {
   return #`${left}.then(${right})`;
@@ -61,6 +65,16 @@ myPromise >>= resp => { console.log(resp); return resp; };
 //myPromise.then(resp => { console.log(resp); return resp; });
 ```
 
+The associativity can be 
+
+- either `left` or `right` for binary operators and 
+- `prefix` or `postfix` for unary operators. 
+
+The precedence is a number that specifies how tightly the operator should bind. 
+The builtin operators range from a precedence of 0 to 20 and are defined [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence).
+
+The **operator definition must return an expression**.
+
 ```js
 ➜  hello-sweet.js sjs operators.js 
 let myPromise_4 = new Promise((resolve_5, reject_6) => {
@@ -72,6 +86,9 @@ myPromise_4.then(resp_7 => {
   console.log(resp_7);
   return resp_7;
 });
+```
+
+``` 
 ➜  hello-sweet.js sjs operators.js | node
 foo
 ```
